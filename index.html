@@ -37,7 +37,9 @@ th:first-child,td:first-child{text-align:left}tr:last-child td{border-bottom:0}
 .note{color:var(--mut);font-size:12px;margin-top:10px}
 .banner{border:1px dashed #6b5320;color:var(--gold);border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none}
 button{background:#2a2112;color:var(--gold);border:1px solid #6b5320;border-radius:10px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){}}
+select,textarea{background:#0b0f0c;color:var(--tx);border:1px solid var(--line);border-radius:10px;height:40px;padding:0 8px;font:inherit}
+textarea{display:none;width:100%;height:120px;margin-top:10px;padding:8px}
+button[data-d]{padding:2px 8px}
 </style></head>
 <body><div class="wrap">
 <div class="brand"><div class="logo">◆</div><div><b>Parlamentum Market</b><span>Shared prices · private trackers</span></div>
@@ -62,7 +64,7 @@ button{background:#2a2112;color:var(--gold);border:1px solid #6b5320;border-radi
 
 <h2>Food factory profit calculator</h2>
 <div class="tw"><table><thead><tr><th>Food tier</th><th>Grain used</th><th>Food price (shared)</th><th>Grain cost</th><th>Profit / batch</th><th>Batches you can run</th><th>Your profit</th></tr></thead><tbody id="fb"></tbody></table></div>
-<p class="note">Assumes one batch of a tier consumes the listed grain and produces 1 food unit. Tell me the real output per batch and I'll update this.</p>
+<p class="note">Each batch uses the listed grain and makes the food-per-batch amount set in the Factory planner (default 1).</p>
 
 <h2>Break-even calculator</h2>
 <p class="note" id="ratehint" style="margin:-4px 0 10px"></p>
@@ -79,6 +81,44 @@ button{background:#2a2112;color:var(--gold);border:1px solid #6b5320;border-radi
 </div>
 <div class="tw"><table><thead><tr><th>Make into</th><th>Grain per unit</th><th>Batches (leftover grain)</th><th>Sell for at least</th><th>Market price</th><th>Profit at market</th></tr></thead><tbody id="bt"></tbody></table></div>
 <p class="note">Assumes income tax is taken off the sale price, and production tax is also taken off the sale price of crafted goods. Leftover grain isn't counted in crafting costs. Tell me if the game applies the taxes differently and I'll fix it.</p>
+
+<h2>Price history</h2>
+<div class="grid"><div class="card"><div class="row"><div><div class="eyebrow">Raw Grain trend</div><div class="big" id="trend">—</div><div class="small" id="trends"></div></div><svg id="spark" width="220" height="60" viewBox="0 0 220 60"></svg></div></div></div>
+<h2>Price alerts</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><b>Buy alert</b><div class="small">Private · grain at or below</div></div><div class="field"><span class="cur">G</span><input data-h="alb" data-p="1" type="number" step="any" min="0" placeholder="0"></div></div></div>
+ <div class="card"><div class="row"><div><b>Sell alert</b><div class="small">Private · grain at or above</div></div><div class="field"><span class="cur">G</span><input data-h="als" data-p="1" type="number" step="any" min="0" placeholder="0"></div></div></div>
+ <div class="card gold"><div class="eyebrow">Alert status</div><div class="small" id="alst" style="margin-top:8px;font-size:14px"></div></div>
+</div>
+<h2>Plant planner</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><b>Resource plants you run</b><div class="small">Private · making grain</div></div><div class="field"><input data-h="pln" type="number" step="1" min="0" placeholder="0"></div></div></div>
+ <div class="card"><div class="eyebrow">Grain per cycle</div><div class="big" id="pg">—</div><div class="small">Plants × plant output</div></div>
+ <div class="card"><div class="eyebrow">Value per cycle</div><div class="big" id="pv">—</div><div class="small">At market, after income tax</div></div>
+ <div class="card"><div class="eyebrow">Cost to found</div><div class="big" id="pf">—</div><div class="small">100 G each · payback: <span id="pp">—</span></div></div>
+</div>
+<h2>Factory planner</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><b>Factories</b><div class="small">Private · one batch each per cycle</div></div><div class="field"><input data-h="fan" type="number" step="1" min="0" placeholder="0"></div></div></div>
+ <div class="card"><div class="row"><div><b>Food tier</b><div class="small">Private</div></div><select data-h="ft"><option value="0">Tier 1</option><option value="1">Tier 2</option><option value="2">Tier 3</option><option value="3">Tier 4</option><option value="4">Tier 5</option></select></div></div>
+ <div class="card"><div class="row"><div><b>Food per batch</b><div class="small">Shared · default 1</div></div><div class="field"><input data-k="batch-yield" data-s="1" type="number" step="any" min="0" placeholder="1"></div></div></div>
+ <div class="card"><div class="eyebrow">Grain needed / cycle</div><div class="big" id="fn">—</div></div>
+ <div class="card"><div class="eyebrow">Supply vs need</div><div class="big" id="fg">—</div><div class="small">Your plants minus factory need</div></div>
+ <div class="card"><div class="eyebrow">Plants needed</div><div class="big" id="fpl">—</div><div class="small">To fully feed these factories</div></div>
+ <div class="card gold"><div class="eyebrow">Profit per cycle</div><div class="big" id="fpr">—</div><div class="small">Buying grain at market, after both taxes</div></div>
+</div>
+<h2>Build plants or buy grain?</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><b>Cycles you'll run</b><div class="small">Private · how long a plant earns</div></div><div class="field"><input data-h="hz" type="number" step="1" min="0" placeholder="30"></div></div></div>
+ <div class="card gold"><div class="eyebrow">Verdict</div><div class="big" id="bvb">—</div><div class="small" id="bvs"></div></div>
+</div>
+<h2>Transactions log</h2>
+<div class="card"><div class="row"><select id="tx-s"><option value="buy">Buy</option><option value="sell">Sell</option></select><div class="field"><input id="tq" type="number" step="any" min="0" placeholder="units"></div><div class="field"><span class="cur">G</span><input id="tp" type="number" step="any" min="0" placeholder="price each"></div><button id="txadd">Add</button></div><div class="small" id="txs" style="margin-top:10px"></div></div>
+<div class="tw" style="margin-top:10px"><table><thead><tr><th>Type</th><th>Units</th><th>Price each</th><th>Total</th><th></th></tr></thead><tbody id="txb"></tbody></table></div>
+<p class="note"><button id="txuse">Use net holdings &amp; average cost in the break-even calculator</button></p>
+<h2>Share</h2>
+<div class="row" style="justify-content:flex-start"><button id="cpy">Copy summary</button><button id="csv">Export CSV</button></div>
+<textarea id="sumbox" readonly></textarea>
 
 <h2>Industries using Raw Grain</h2>
 <div class="tw"><table><thead><tr><th>Industry</th><th>Cost to found</th><th>Makes</th><th>Uses</th><th>Produces</th></tr></thead><tbody>
@@ -105,16 +145,16 @@ function build(){
  document.querySelectorAll("input[data-s]").forEach(el=>el.addEventListener("change",()=>savePrice(el.dataset.k,el.value)));
 }
 function render(){
- rate=n(prices["usd-per-gold"]);mode=pref==="U"&&rate>0?"U":"G";
+ rate=n(prices["usd-per-gold"]);mode=pref==="U"&&rate>0?"U":"G";const yld=n(prices["batch-yield"])||1;
  document.querySelectorAll(".cur").forEach(e=>e.textContent=mode==="U"?"$":"G");
  document.querySelectorAll("#mode .tab").forEach(e=>e.classList.toggle("on",e.dataset.m===mode));
  document.querySelectorAll("input[data-s]").forEach(el=>{if(document.activeElement!==el)el.value=disp(el.dataset.k,prices[el.dataset.k])});
  if(document.activeElement!==$("h-grain"))$("h-grain").value=hold.grain??"";
  rate=n(prices["usd-per-gold"]);const gp=n(prices["raw-grain"]),h=n(hold.grain);$("u-grain").textContent=alt(gp);$("hv").textContent=g(h*gp);
  let best=-1e9,bi=-1,sell=h*gp;
- TIERS.forEach((u,i)=>{const fp=n(prices["food-"+(i+1)]),cost=u*gp,pr=fp-cost,b=Math.floor(h/u),yp=b*pr;
+ TIERS.forEach((u,i)=>{const fp=n(prices["food-"+(i+1)]),cost=u*gp,pr=yld*fp-cost,b=Math.floor(h/u),yp=b*pr;
   $("c"+i).textContent=g(cost);$("fu"+i).textContent=alt(fp);$("pr"+i).innerHTML=`<span class="${cls(pr)}">${g(pr)}</span>`;$("b"+i).textContent=b;$("yp"+i).innerHTML=`<span class="${cls(yp)}">${g(yp)}</span>`;
-  const rev=b*fp;if(fp>0&&b>0&&rev>best){best=rev;bi=i}});
+  const rev=b*yld*fp;if(fp>0&&b>0&&rev>best){best=rev;bi=i}});
  if(bi>=0&&best>sell){$("bu").textContent=`Food T${bi+1}`;$("bus").textContent=`Make & sell ≈ ${g(best)} vs ${g(sell)} selling raw`}
  else if(h>0&&gp>0){$("bu").textContent="Sell raw";$("bus").textContent=`≈ ${g(sell)} — beats crafting at current prices`}
  else{$("bu").textContent="—";$("bus").textContent="Enter prices to compare"}
@@ -130,22 +170,71 @@ function render(){
  const rp=bq*(gp*(1-fi)-bpu);$("bm").innerHTML=bq>0&&gp>0?`<span class="${cls(rp)}">${g(rp)}</span>`:"—";
  TIERS.forEach((u,i)=>{const b=Math.floor(bq/u),den=1-fi-fpd,fm=n(prices["food-"+(i+1)]);
   $("bb"+i).textContent=bq>0?`${b} (${(bq-b*u).toFixed(0)} left)`:"—";
-  $("be"+i).textContent=bpu>0&&den>0?g(u*bpu/den):"—";
+  $("be"+i).textContent=bpu>0&&den>0?g(u*bpu/den/yld):"—";
   $("bm"+i).textContent=fm>0?g(fm):"—";
-  const pf=b*(fm*den-u*bpu);$("bp"+i).innerHTML=b>0&&fm>0&&bpu>0?`<span class="${cls(pf)}">${g(pf)}</span>`:"—";});
+  const pf=b*(yld*fm*den-u*bpu);$("bp"+i).innerHTML=b>0&&fm>0&&bpu>0?`<span class="${cls(pf)}">${g(pf)}</span>`:"—";});
+ extra(gp,fi,fpd,yld);
  const out=n(prices["plant-output"]),inc=out*gp;$("pb").textContent=inc>0?(100/inc).toFixed(1)+" cycles":"—";
 }
-async function savePrice(k,v){prices[k]=v===""?null:toG(k,n(v));render();if(!pdoc)return;
- try{await pdoc.update({[k]:prices[k]})}catch(e){try{await pdoc.set(prices)}catch(e2){banner("Couldn't save — you may need Contributor access to edit shared prices.")}}}
+let dl=null;
+function saveH(){if(hdoc)Promise.resolve(hdoc.set(hold)).catch(()=>banner("Couldn't save your holdings."))}
+function extra(gp,fi,fpd,yld){
+ const H=hold,out=n(prices["plant-output"]);
+ document.querySelectorAll("[data-h]").forEach(el=>{if(document.activeElement!==el){const v=H[el.dataset.h];el.value=el.dataset.p?disp("bpu",v):(v??(el.tagName==="SELECT"?0:""))}});
+ const hs=prices._hist||[];
+ if(hs.length>1){const a=hs[hs.length-1].g,b=hs[hs.length-2].g,d=b?(a-b)/b*100:0;
+  $("trend").innerHTML=`<span class="${cls(d)}">${d>0?"▲":d<0?"▼":"■"} ${Math.abs(d).toFixed(1)}%</span>`;
+  const mn=Math.min(...hs.map(x=>x.g)),mx=Math.max(...hs.map(x=>x.g)),r=mx-mn||1;
+  $("spark").innerHTML=`<polyline fill="none" stroke="#f0b23a" stroke-width="2" points="${hs.map((x,i)=>(i/(hs.length-1)*216+2).toFixed(1)+","+(56-(x.g-mn)/r*52).toFixed(1)).join(" ")}"/>`;
+  $("trends").textContent=`${hs.length} updates · low ${g(mn)} · high ${g(mx)}`;
+ }else{$("trend").textContent="—";$("spark").innerHTML="";$("trends").textContent="Needs two grain price updates to show a trend"}
+ const ab=n(H.alb),as=n(H.als),al=[];
+ if(ab>0&&gp>0&&gp<=ab)al.push("Buy: grain is at or below your target");
+ if(as>0&&gp>=as)al.push("Sell: grain is at or above your target");
+ $("alst").innerHTML=al.length?`<span class="pos">${al.join("<br>")}</span>`:"No alerts triggered";
+ const pn=n(H.pln),sup=pn*out,val=sup*gp*(1-fi),fc=pn*100;
+ $("pg").textContent=pn>0&&out>0?sup.toFixed(0)+" grain":"—";
+ $("pv").textContent=val>0?g(val):"—";
+ $("pf").textContent=pn>0?g(fc):"—";
+ $("pp").textContent=val>0?(fc/val).toFixed(1)+" cycles":"—";
+ const fa=n(H.fan),ti=Math.min(4,Math.max(0,n(H.ft))),need=fa*TIERS[ti],fpp=n(prices["food-"+(ti+1)]),gap=sup-need,prof=fa*yld*fpp*(1-fi-fpd)-need*gp;
+ $("fn").textContent=fa>0?need+" grain":"—";
+ $("fg").innerHTML=fa>0&&out>0?`<span class="${cls(gap)}">${gap>=0?"+":""}${gap.toFixed(0)} grain</span>`:"—";
+ $("fpl").textContent=fa>0&&out>0?`${Math.ceil(need/out)} total (${Math.max(0,Math.ceil(need/out)-pn)} more)`:"—";
+ $("fpr").innerHTML=fa>0&&fpp>0?`<span class="${cls(prof)}">${g(prof)}</span>`:"—";
+ const hz=n(H.hz);
+ if(out>0&&hz>0&&gp>0){const cpg=100/(out*hz);$("bvb").innerHTML=`<span class="${cpg<gp?"pos":"neg"}">${cpg<gp?"Build":"Buy"}</span>`;$("bvs").textContent=`Plant ≈ ${g(cpg)} per grain over ${hz} cycles vs ${g(gp)} to buy`}else{$("bvb").textContent="—";$("bvs").textContent="Needs plant output, grain price and a cycle count"}
+ const tx=H.tx||[];let bq2=0,bc2=0,sq=0;tx.forEach(x=>{if(x.s==="buy"){bq2+=x.q;bc2+=x.q*x.p}else sq+=x.q});
+ $("txs").textContent=tx.length?`Bought ${bq2} · Sold ${sq} · Net held ${bq2-sq} · Avg cost ${g(bq2?bc2/bq2:0)}`:"No transactions yet";
+ $("txb").innerHTML=tx.map((x,i)=>`<tr><td>${x.s==="buy"?"Buy":"Sell"}</td><td>${x.q}</td><td>${g(x.p)}</td><td>${g(x.q*x.p)}</td><td><button data-d="${i}">✕</button></td></tr>`).join("");
+}
+function setup(){
+ document.querySelectorAll("[data-h]").forEach(el=>el.addEventListener("change",()=>{hold[el.dataset.h]=el.dataset.p?toG("bpu",n(el.value)):n(el.value);render();saveH()}));
+ $("txadd").addEventListener("click",()=>{const q=n($("tq").value),p=toG("bpu",n($("tp").value));if(q<=0||p<=0)return;hold.tx=[...(hold.tx||[]),{s:$("tx-s").value,q,p,t:Date.now()}];$("tq").value="";$("tp").value="";render();saveH()});
+ $("txb").addEventListener("click",e=>{const i=e.target.dataset.d;if(i==null)return;hold.tx=(hold.tx||[]).filter((_,j)=>j!=i);render();saveH()});
+ $("txuse").addEventListener("click",()=>{let q=0,c=0,s=0;(hold.tx||[]).forEach(x=>{if(x.s==="buy"){q+=x.q;c+=x.q*x.p}else s+=x.q});if(q<=0)return;hold.bq=Math.max(q-s,0);hold.bpu=c/q;render();saveH()});
+ $("cpy").addEventListener("click",copySummary);$("csv").addEventListener("click",exportCsv);
+}
+function rows(){const r=[["Raw Grain",prices["raw-grain"]]];TIERS.forEach((u,i)=>r.push(["Food T"+(i+1),prices["food-"+(i+1)]]));return r}
+function fmt(v){return v==null?"—":n(v).toFixed(2)+" G"+(rate?" / $"+(n(v)*rate).toFixed(2):"")}
+function copySummary(){const t="Parlamentum market"+(rate?" (1 G = $"+rate+")":"")+"\n"+rows().map(r=>r[0]+": "+fmt(r[1])).join("\n");
+ const done=()=>{$("cpy").textContent="Copied ✓";setTimeout(()=>$("cpy").textContent="Copy summary",1500)};
+ const fb=()=>{$("sumbox").style.display="block";$("sumbox").value=t;$("sumbox").select()};
+ try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}}
+async function exportCsv(){const csv="item,gold,usd\n"+rows().map(r=>`${r[0]},${r[1]==null?"":n(r[1])},${r[1]==null||!rate?"":(n(r[1])*rate).toFixed(2)}`).join("\n");
+ try{if(dl){await dl.save({filename:"parlamentum-prices.csv",data:csv});return}}catch(e){return}
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="parlamentum-prices.csv";a.click()}
+async function savePrice(k,v){prices[k]=v===""?null:toG(k,n(v));if(k==="raw-grain"&&prices[k]!=null){const h=(prices._hist||[]).slice(-59);h.push({t:Date.now(),g:prices[k]});prices._hist=h}render();if(!pdoc)return;
+ try{await pdoc.update(k==="raw-grain"?{[k]:prices[k],_hist:prices._hist}:{[k]:prices[k]})}catch(e){try{await pdoc.set(prices)}catch(e2){banner("Couldn't save — you may need Contributor access to edit shared prices.")}}}
 async function init(){
  build();render();["bq","bpu"].forEach(id=>$(id).addEventListener("change",async e=>{hold[id]=toG(id,n(e.target.value));render();if(hdoc)try{await hdoc.set(hold)}catch(x){banner("Couldn't save your holdings.")}}));$("h-grain").addEventListener("change",async e=>{hold.grain=n(e.target.value);render();if(hdoc)try{await hdoc.set(hold)}catch(x){banner("Couldn't save your holdings.")}});
  try{
-  const claude_=window.claude;const db=claude_&&await claude_.use("db");const user=claude_&&await claude_.use("user");
-  if(!db||!user){$("st").textContent="Offline — sign in to save";banner("Sign in to claude.ai to save prices and holdings. Nothing is saved right now.");return}
+  const claude_=window.claude;const db=claude_&&await claude_.use("db");const user=claude_&&await claude_.use("user");try{dl=claude_&&await claude_.use("downloads")}catch(x){}
+  if(!db||!user){try{prices=JSON.parse(localStorage.getItem("pm-prices")||"{}");hold=JSON.parse(localStorage.getItem("pm-hold")||"{}")}catch(x){}pdoc={update:async()=>{try{localStorage.setItem("pm-prices",JSON.stringify(prices))}catch(x){}}};pdoc.set=pdoc.update;hdoc={set:async()=>{try{localStorage.setItem("pm-hold",JSON.stringify(hold))}catch(x){}}};$("st").textContent="Saved on this device";render();return}
   uid=await user.id();pdoc=db.collection("market").doc("prices");hdoc=db.collection("data/users/"+uid).doc("holdings");
   pdoc.onSnapshot(s=>{prices=s.exists?{...s.data()}:{};render();$("st").textContent="Live · saves automatically"});
   hdoc.onSnapshot(s=>{hold=s.exists?{...s.data()}:{};render()});
  }catch(e){$("st").textContent="Offline";banner("Couldn't connect to storage.")}
 }
-init();
+setup();init();
 </script></body></html>
