@@ -7,21 +7,22 @@
 :root:not([data-theme="light"]){color-scheme:dark}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:radial-gradient(1200px 500px at 20% -10%,#1b2a20,var(--bg));color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
-.wrap{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 16px 60px}
 .brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .logo{width:42px;height:42px;border:1px solid var(--line);border-radius:12px;display:grid;place-items:center;color:var(--gold);background:var(--card)}
 .brand b{letter-spacing:.14em;font-size:13px;text-transform:uppercase;display:block}.brand span{color:var(--mut);font-size:12px}
 .status{margin-left:auto;color:var(--mut);font-size:12px}.status i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pos);margin-right:6px}
 .eyebrow{color:var(--mut);letter-spacing:.16em;font-size:11px;text-transform:uppercase;font-weight:600}
 h1{font-size:clamp(28px,6vw,44px);margin:6px 0 8px;letter-spacing:-.02em}
-.sub{color:var(--mut);max-width:620px;margin:0 0 20px}
+.sub{color:var(--mut);max-width:640px;margin:0 0 20px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.tab{padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--mut);font-size:13px}
-.tab.on{color:var(--gold);border-color:#6b5320;background:#2a2112}.tab.soon{opacity:.5}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:18px}
+.tab{padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--mut);font-size:13px;cursor:pointer}
+.tab.on{color:var(--gold);border-color:#6b5320;background:#2a2112}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:18px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
 .card.gold{border-color:#6b5320;background:linear-gradient(#2a2112,var(--card))}
 .card .big{font-size:26px;font-weight:700;margin:6px 0 2px}.card.gold .big{color:var(--gold)}
+.mid{font-size:16px;font-weight:700;margin-top:6px}
 .small{color:var(--mut);font-size:12px}
 h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:26px 0 10px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -29,7 +30,7 @@ h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)
 .field span{color:var(--gold);margin-right:6px;font-size:13px}
 input{background:transparent;border:0;color:var(--tx);font:inherit;text-align:right;width:90px;outline:0}
 .tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
-table{width:100%;border-collapse:collapse;min-width:640px}
+table{width:100%;border-collapse:collapse;min-width:700px}
 th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);text-align:right;padding:12px;border-bottom:1px solid var(--line);font-weight:600}
 td{padding:10px 12px;text-align:right;border-bottom:1px solid #1b261f}
 th:first-child,td:first-child{text-align:left}tr:last-child td{border-bottom:0}
@@ -37,115 +38,302 @@ th:first-child,td:first-child{text-align:left}tr:last-child td{border-bottom:0}
 .note{color:var(--mut);font-size:12px;margin-top:10px}
 .banner{border:1px dashed #6b5320;color:var(--gold);border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none}
 button{background:#2a2112;color:var(--gold);border:1px solid #6b5320;border-radius:10px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){}}
+select,textarea{background:#0b0f0c;color:var(--tx);border:1px solid var(--line);border-radius:10px;height:40px;padding:0 8px;font:inherit}
+textarea{display:none;width:100%;height:120px;margin-top:10px;padding:8px}
+button[data-d]{padding:2px 8px}
+.rcp{margin-bottom:12px}.rcp .line{margin-top:12px;font-size:13px}
+.two{display:grid;gap:6px;justify-items:end}
 </style></head>
 <body><div class="wrap">
 <div class="brand"><div class="logo">◆</div><div><b>Parlamentum Market</b><span>Shared prices · private trackers</span></div>
 <div class="status"><i></i><span id="st">Connecting…</span></div></div>
 <div class="banner" id="ban"></div>
-<div class="eyebrow">Resource · Raw Grain</div>
-<h1>Raw Grain tracker</h1>
-<p class="sub">Market prices are shared with everyone. Your holdings stay private to your account.</p>
-<div class="tabs" id="mode"><span class="tab on" data-m="G">Enter prices in Gold</span><span class="tab" data-m="U">Enter prices in USD</span></div>
-<div class="tabs"><span class="tab on">Raw Grain</span><span class="tab soon">Raw Iron</span><span class="tab soon">Raw Oil</span><span class="tab soon">Raw Cotton</span><span class="tab soon">Timber</span><span class="tab soon">Coal</span><span class="tab soon">Raw Copper</span><span class="tab soon">Construction</span><span class="tab soon">Fuel</span><span class="tab soon">Electronics</span></div>
+<div class="eyebrow">Market · <span class="rn"></span></div>
+<h1><span class="rn"></span> tracker</h1>
+<p class="sub">Global prices are in gold, local prices are in USD. Prices are shared; your holdings stay private.</p>
+<div class="tabs" id="rtabs"></div>
 
 <div class="grid">
- <div class="card"><div class="row"><div><b>USD per Gold</b><div class="small">Shared · exchange rate for every value</div></div><div class="field"><span>$</span><input id="p-rate" data-k="usd-per-gold" data-s="1" type="number" step="any" min="0" placeholder="0.00"></div></div></div>
- <div class="card"><div class="row"><div><b>Raw Grain price</b><div class="small">Shared · price per unit</div><div class="small" id="u-grain"></div></div><div class="field"><span class="cur">G</span><input id="p-grain" data-k="raw-grain" data-s="1" type="number" step="any" min="0" placeholder="0"></div></div></div>
- <div class="card"><div class="row"><div><b>Your Raw Grain held</b><div class="small">Private · units</div></div><div class="field"><input id="h-grain" type="number" step="any" min="0" placeholder="0"></div></div></div>
+ <div class="card"><div class="row"><div><b>USD per Gold</b><div class="small">Shared · links local USD to global gold</div><div class="small" id="ratehint"></div></div><div class="field"><span>$</span><input data-k="usd-per-gold" data-s="1" type="number" step="any" min="0" placeholder="0.00"></div></div></div>
+ <div class="card" data-v="std"><b><span class="rn"></span> price</b><div class="small">Shared · per unit</div>
+  <div class="two" style="margin-top:8px"><div class="row" style="width:100%"><span class="small">Global · gold</span><div class="field"><span>G</span><input data-sk="price" data-s="1" type="number" step="any" min="0" placeholder="0"></div></div><div class="small" id="u-pg"></div>
+  <div class="row" style="width:100%"><span class="small">Local · USD</span><div class="field"><span>$</span><input data-sk="lprice" data-s="1" type="number" step="any" min="0" placeholder="0"></div></div><div class="small" id="u-pl"></div></div></div>
+ <div class="card" data-v="std"><div class="row"><div><b>Your <span class="rn"></span> held</b><div class="small">Private · units</div></div><div class="field"><input data-h="held" type="number" step="any" min="0" placeholder="0"></div></div></div>
 </div>
 <div class="grid">
- <div class="card"><div class="eyebrow">Holdings value</div><div class="big" id="hv">0.00 G</div><div class="small">Held × market price</div></div>
- <div class="card gold"><div class="eyebrow">Best use of your grain</div><div class="big" id="bu">—</div><div class="small" id="bus">Enter prices to compare</div></div>
- <div class="card"><div class="eyebrow">Resource plant payback</div><div class="big" id="pb">—</div><div class="small">100 G ÷ (output × price)</div></div>
+ <div class="card" data-v="std"><div class="eyebrow">Holdings value</div><div class="mid" id="hv"></div></div>
+ <div class="card gold" data-v="chain"><div class="eyebrow">Best use of your <span class="un"></span></div><div class="mid" id="bu"></div></div>
+ <div class="card" data-v="plant"><div class="eyebrow">Resource plant payback</div><div class="big" id="pb">—</div><div class="small">100 G ÷ (output × best price)</div></div>
 </div>
 
-<h2>Food factory profit calculator</h2>
-<div class="tw"><table><thead><tr><th>Food tier</th><th>Grain used</th><th>Food price (shared)</th><th>Grain cost</th><th>Profit / batch</th><th>Batches you can run</th><th>Your profit</th></tr></thead><tbody id="fb"></tbody></table></div>
-<p class="note">Assumes one batch of a tier consumes the listed grain and produces 1 food unit. Tell me the real output per batch and I'll update this.</p>
+<div data-v="chain">
+<h2><span class="pn"></span> factory profit calculator</h2>
+<div class="tw"><table><thead><tr><th><span class="pn"></span> tier</th><th><span class="un"></span> used</th><th>Global price</th><th>Local price</th><th>Input cost</th><th>Profit / batch</th><th>Batches you can run</th><th>Your profit</th></tr></thead><tbody id="fb"></tbody></table></div>
+<p class="note">Input cost uses the cheaper market. Each batch makes the per-batch amount set in the Factory planner (default 1). Your profit uses whichever market sells highest.</p>
+</div>
 
+<div data-v="light">
+<h2>Light industry recipes</h2>
+<div id="lightbox"></div>
+<p class="note">Each batch uses the listed inputs (bought at the cheaper market) and makes the per-batch amount (default 1). Profit is after income and production tax.</p>
+</div>
+
+<div data-v="heavy">
+<h2>Heavy industry · Ships</h2>
+<div class="grid" id="hgrid"></div>
+<div class="tw"><table><thead><tr><th>Ship tier</th><th>Construction</th><th>Electronics</th><th>Fuel</th><th>Input cost</th><th>Global price</th><th>Local price</th><th>Profit / ship</th><th>You can build</th></tr></thead><tbody id="hb"></tbody></table></div>
+<p class="note">"You can build" uses the construction, electronics and fuel you've entered on those tabs. Both taxes come off the sale price.</p>
+</div>
+
+<div data-v="std">
 <h2>Break-even calculator</h2>
-<p class="note" id="ratehint" style="margin:-4px 0 10px"></p>
 <div class="grid">
- <div class="card"><div class="row"><div><b>Grain you bought</b><div class="small">Private · units</div></div><div class="field"><input id="bq" type="number" step="any" min="0" placeholder="0"></div></div></div>
- <div class="card"><div class="row"><div><b>Price paid per unit</b><div class="small">Private · price per unit</div><div class="small" id="u-bpu"></div></div><div class="field"><span class="cur">G</span><input id="bpu" type="number" step="any" min="0" placeholder="0"></div></div></div>
- <div class="card"><div class="row"><div><b>Income tax</b><div class="small">Shared · on sales</div></div><div class="field"><input id="t-inc" data-k="income-tax" data-s="1" type="number" step="any" min="0" placeholder="10"><span style="margin:0 0 0 4px">%</span></div></div></div>
- <div class="card"><div class="row"><div><b>Production tax</b><div class="small">Shared · on crafted goods</div></div><div class="field"><input id="t-prod" data-k="production-tax" data-s="1" type="number" step="any" min="0" placeholder="10"><span style="margin:0 0 0 4px">%</span></div></div></div>
+ <div class="card"><div class="row"><div><b><span class="rn"></span> you bought</b><div class="small">Private · units</div></div><div class="field"><input data-h="bq" type="number" step="any" min="0" placeholder="0"></div></div></div>
+ <div class="card"><b>Price paid per unit</b><div class="small">Private · enter in either</div>
+  <div class="two" style="margin-top:8px"><div class="row" style="width:100%"><span class="small">Gold</span><div class="field"><span>G</span><input data-h="bpu" type="number" step="any" min="0" placeholder="0"></div></div>
+  <div class="row" style="width:100%"><span class="small">USD</span><div class="field"><span>$</span><input id="bpuU" type="number" step="any" min="0" placeholder="0"></div></div></div></div>
+ <div class="card"><div class="row"><div><b>Income tax</b><div class="small">Shared · on sales</div></div><div class="field"><input data-k="income-tax" data-s="1" type="number" step="any" min="0" placeholder="10"><span style="margin:0 0 0 4px">%</span></div></div></div>
+ <div class="card"><div class="row"><div><b>Production tax</b><div class="small">Shared · on crafted goods</div></div><div class="field"><input data-k="production-tax" data-s="1" type="number" step="any" min="0" placeholder="10"><span style="margin:0 0 0 4px">%</span></div></div></div>
 </div>
 <div class="grid">
- <div class="card"><div class="eyebrow">Total spent</div><div class="big" id="bc">0.00 G</div></div>
- <div class="card gold"><div class="eyebrow">Sell raw grain for at least</div><div class="big" id="be">—</div><div class="small">per unit, after income tax</div></div>
- <div class="card"><div class="eyebrow">Profit selling raw at market</div><div class="big" id="bm">—</div><div class="small">After income tax</div></div>
+ <div class="card"><div class="eyebrow">Total spent</div><div class="mid" id="bc"></div></div>
+ <div class="card gold"><div class="eyebrow">Sell for at least</div><div class="mid" id="be">—</div><div class="small">per unit, after income tax</div></div>
+ <div class="card"><div class="eyebrow">Profit selling at market</div><div class="mid" id="bm"></div><div class="small">After income tax</div></div>
 </div>
-<div class="tw"><table><thead><tr><th>Make into</th><th>Grain per unit</th><th>Batches (leftover grain)</th><th>Sell for at least</th><th>Market price</th><th>Profit at market</th></tr></thead><tbody id="bt"></tbody></table></div>
-<p class="note">Assumes income tax is taken off the sale price, and production tax is also taken off the sale price of crafted goods. Leftover grain isn't counted in crafting costs. Tell me if the game applies the taxes differently and I'll fix it.</p>
+<div data-v="chain">
+<div class="tw"><table><thead><tr><th>Make into</th><th>Per unit</th><th>Batches (leftover)</th><th>Sell for at least</th><th>Global price</th><th>Local price</th><th>Profit at best market</th></tr></thead><tbody id="bt"></tbody></table></div>
+<p class="note">Income tax is taken off the sale price, and production tax is also taken off the sale price of crafted goods. Leftover isn't counted in crafting costs.</p>
+</div>
 
-<h2>Industries using Raw Grain</h2>
-<div class="tw"><table><thead><tr><th>Industry</th><th>Cost to found</th><th>Makes</th><th>Uses</th><th>Produces</th></tr></thead><tbody>
-<tr><td>Resource plant</td><td class="gc">100 G</td><td>Raw Grain (or any raw resource)</td><td>—</td><td><div class="field" style="display:inline-flex;height:34px"><input id="p-out" data-k="plant-output" data-s="1" type="number" step="any" min="0" placeholder="per cycle" style="width:80px"></div></td></tr>
-<tr><td>Factory</td><td class="gc">100 G</td><td>Food T1–T5</td><td>10 / 20 / 35 / 60 / 100 grain</td><td>See calculator</td></tr>
+<h2>Price history</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><div class="eyebrow">Global trend</div><div class="big" id="trendG">—</div><div class="small" id="trendGs"></div></div><svg id="sparkG" width="200" height="60" viewBox="0 0 200 60"></svg></div></div>
+ <div class="card"><div class="row"><div><div class="eyebrow">Local trend</div><div class="big" id="trendL">—</div><div class="small" id="trendLs"></div></div><svg id="sparkL" width="200" height="60" viewBox="0 0 200 60"></svg></div></div>
+</div>
+<h2>Price alerts</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><b>Buy alert</b><div class="small">Private · gold, at or below</div></div><div class="field"><span>G</span><input data-h="alb" type="number" step="any" min="0" placeholder="0"></div></div></div>
+ <div class="card"><div class="row"><div><b>Sell alert</b><div class="small">Private · gold, at or above</div></div><div class="field"><span>G</span><input data-h="als" type="number" step="any" min="0" placeholder="0"></div></div></div>
+ <div class="card gold"><div class="eyebrow">Alert status</div><div class="small" id="alst" style="margin-top:8px;font-size:14px"></div></div>
+</div>
+</div>
+
+<div data-v="plant">
+<h2>Plant planner</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><b>Resource plants you run</b><div class="small">Private</div></div><div class="field"><input data-h="pln" type="number" step="1" min="0" placeholder="0"></div></div></div>
+ <div class="card"><div class="row"><div><b>Output per plant</b><div class="small">Shared · per cycle</div></div><div class="field"><input data-sk="out" data-s="1" type="number" step="any" min="0" placeholder="0"></div></div></div>
+ <div class="card"><div class="eyebrow">Per cycle</div><div class="big" id="pg">—</div><div class="small">Plants × output</div></div>
+ <div class="card"><div class="eyebrow">Value per cycle</div><div class="mid" id="pv">—</div><div class="small">Best market, after income tax</div></div>
+ <div class="card"><div class="eyebrow">Cost to found</div><div class="mid" id="pf">—</div><div class="small">100 G each · payback: <span id="pp">—</span></div></div>
+</div>
+</div>
+<div data-v="chain">
+<h2>Factory planner</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><b>Factories</b><div class="small">Private · one batch each per cycle</div></div><div class="field"><input data-h="fan" type="number" step="1" min="0" placeholder="0"></div></div></div>
+ <div class="card"><div class="row"><div><b>Tier</b><div class="small">Private</div></div><select data-h="ft"><option value="0">Tier 1</option><option value="1">Tier 2</option><option value="2">Tier 3</option><option value="3">Tier 4</option><option value="4">Tier 5</option></select></div></div>
+ <div class="card"><div class="row"><div><b><span class="pn"></span> per batch</b><div class="small">Shared · default 1</div></div><div class="field"><input data-sk="yield" data-s="1" type="number" step="any" min="0" placeholder="1"></div></div></div>
+ <div class="card"><div class="eyebrow">Needed / cycle</div><div class="big" id="fn">—</div></div>
+ <div class="card"><div class="eyebrow">Supply vs need</div><div class="big" id="fg">—</div><div class="small">Your plants minus factory need</div></div>
+ <div class="card"><div class="eyebrow">Plants needed</div><div class="mid" id="fpl">—</div></div>
+ <div class="card gold"><div class="eyebrow">Profit per cycle</div><div class="mid" id="fpr">—</div><div class="small">Cheapest input, best sale market, after both taxes</div></div>
+</div>
+</div>
+<div data-v="plant">
+<h2>Build plants or buy?</h2>
+<div class="grid">
+ <div class="card"><div class="row"><div><b>Cycles you'll run</b><div class="small">Private · how long a plant earns</div></div><div class="field"><input data-h="hz" type="number" step="1" min="0" placeholder="30"></div></div></div>
+ <div class="card gold"><div class="eyebrow">Verdict</div><div class="big" id="bvb">—</div><div class="small" id="bvs"></div></div>
+</div>
+</div>
+<div data-v="std">
+<h2>Transactions log</h2>
+<div class="card"><div class="row"><select id="tx-s"><option value="buy">Buy</option><option value="sell">Sell</option></select><div class="field"><input id="tq" type="number" step="any" min="0" placeholder="units"></div><div class="field"><span>G</span><input id="tp" type="number" step="any" min="0" placeholder="gold each"></div><div class="field"><span>$</span><input id="tpu" type="number" step="any" min="0" placeholder="USD each"></div><button id="txadd">Add</button></div><div class="small" id="txs" style="margin-top:10px"></div></div>
+<div class="tw" style="margin-top:10px"><table><thead><tr><th>Type</th><th>Units</th><th>Price each</th><th>Total</th><th></th></tr></thead><tbody id="txb"></tbody></table></div>
+<p class="note"><button id="txuse">Use net holdings &amp; average cost in the break-even calculator</button></p>
+</div>
+<div data-v="cmp">
+<h2>Global vs Local</h2>
+<div class="tw"><table><thead><tr><th>Item</th><th>Global</th><th>Local</th><th>Local vs global</th><th>Best trade, per unit</th></tr></thead><tbody id="cmpb"></tbody></table></div>
+<p class="note">The best trade buys in the cheaper market and sells in the dearer one, after income tax on the sale. Import and export taxes aren't included.</p>
+</div>
+<h2>Share</h2>
+<div class="row" style="justify-content:flex-start"><button id="cpy">Copy summary</button><button id="csv">Export CSV</button></div>
+<textarea id="sumbox" readonly></textarea>
+
+<h2>Industries</h2>
+<div class="tw"><table><thead><tr><th>Industry</th><th>Cost to found</th><th>Makes</th><th>Uses</th></tr></thead><tbody>
+<tr data-v="plant"><td>Resource plant</td><td class="gc">100 G</td><td>Any raw resource</td><td>—</td></tr>
+<tr data-v="chain"><td>Factory</td><td class="gc">100 G</td><td><span class="pn"></span> T1–T5</td><td id="fuses"></td></tr>
+<tr data-v="light"><td>Light industry</td><td class="gc2">250 G</td><td>See recipes</td><td id="luses"></td></tr>
+<tr data-v="heavy"><td>Heavy industry</td><td class="gh">—</td><td>Ships T1–T5</td><td>Construction, electronics, fuel</td></tr>
 </tbody></table></div>
-<p class="note">Plant output is shared and editable by everyone. Leave blank until you know it.</p>
 </div>
 <script>
-const TIERS=[10,20,35,60,100];const $=id=>document.getElementById(id);
-let prices={},hold={},uid=null,hdoc=null,pdoc=null,ok=false,rate=0;
-const n=v=>{v=parseFloat(v);return isNaN(v)?0:v};let pref="G",mode="G";try{if(localStorage.getItem("pm-mode")==="U")pref="U"}catch(e){}
-const g=v=>mode==="U"&&rate?"$"+(v*rate).toFixed(2)+" · "+v.toFixed(2)+" G":v.toFixed(2)+" G"+(rate?" · $"+(v*rate).toFixed(2):"");
-const isP=k=>k==="raw-grain"||k==="bpu"||String(k).startsWith("food-");
-const toG=(k,x)=>isP(k)&&mode==="U"&&rate>0?x/rate:x;
-const disp=(k,v)=>v==null||v===""?"":(isP(k)&&mode==="U"&&rate>0?+(v*rate).toFixed(4):v);
-const alt=x=>!rate?"":mode==="U"?"≈ "+x.toFixed(2)+" G":"≈ $"+(x*rate).toFixed(2)+" USD";
-document.querySelectorAll("#mode .tab").forEach(e=>e.addEventListener("click",()=>{if(e.dataset.m==="U"&&!rate){banner("Set the USD per Gold rate at the top first.");return}pref=e.dataset.m;try{localStorage.setItem("pm-mode",pref)}catch(x){}render()}));
+const T1=[10,20,35,60,100],T2=[25,50,90,150,250],SHIP=[[2,1,1],[4,2,2],[6,4,4],[12,6,6],[20,10,10]];
+const LIGHT=[{out:"construction",name:"Construction materials",inputs:[["raw-iron",5],["timber",5]]},{out:"fuel",name:"Fuel",inputs:[["coal",5],["raw-oil",5]]},{out:"electronics",name:"Electronics",inputs:[["raw-copper",5],["raw-cotton",5]]}];
+const $=id=>document.getElementById(id);
+const mk=(key,name,unit,pk,x)=>({key,name,unit,pk,type:"raw",hist:"_hist_"+key,pre:key+"_",held:key+"_held",po:"plant-output-"+pk,...x});
+const RES={
+ grain:mk("grain","Raw Grain","grain","raw-grain",{hist:"_hist",pre:"",held:"grain",po:"plant-output",chain:{prod:"Food",pp:"food",py:"batch-yield",tiers:T1}}),
+ iron:mk("iron","Raw Iron","iron","raw-iron",{chain:{prod:"Weapon",pp:"weapon",py:"batch-yield-weapon",tiers:T1}}),
+ oil:mk("oil","Raw Oil","oil","raw-oil",{chain:{prod:"Ticket",pp:"ticket",py:"batch-yield-ticket",tiers:T2}}),
+ cotton:mk("cotton","Raw Cotton","cotton","raw-cotton",{}),
+ timber:mk("timber","Timber","timber","timber",{}),
+ coal:mk("coal","Coal","coal","coal",{}),
+ copper:mk("copper","Raw Copper","copper","raw-copper",{}),
+ construction:mk("construction","Construction Materials","construction","construction",{type:"inter"}),
+ fuel:mk("fuel","Fuel","fuel","fuel",{type:"inter"}),
+ electronics:mk("electronics","Electronics","electronics","electronics",{type:"inter"}),
+ ships:{key:"ships",name:"Ships",unit:"ships",pk:"ships",type:"heavy"}};
+const NAME=Object.fromEntries(Object.values(RES).map(r=>[r.pk,r.name]));
+let cur="grain";try{const s=localStorage.getItem("pm-res");if(RES[s])cur=s}catch(e){}
+let R=RES[cur],REC=[],T=[],prices={},hold={},hdoc=null,pdoc=null,rate=0,dl=null;
+const n=v=>{v=parseFloat(v);return isNaN(v)?0:v};
+const g=v=>v.toFixed(2)+" G"+(rate?" · $"+(v*rate).toFixed(2):"");
+const gu=u=>"$"+u.toFixed(2)+(rate>0?" · "+(u/rate).toFixed(2)+" G":"");
 const cls=v=>v>0?"pos":v<0?"neg":"";
+const HK=k=>k==="held"?R.held:R.pre+k;
+const tax=k=>(prices[k]==null?10:n(prices[k]))/100;
+const G=k=>n(prices[k]),L=k=>rate>0?n(prices["loc-"+k])/rate:0;
+const buy=k=>{const a=G(k),b=L(k);return a>0&&b>0?Math.min(a,b):(a||b)};
+const best=k=>Math.max(G(k),L(k));
+const IN=(k,s,w)=>`<div class="field" style="display:inline-flex;height:34px"><span>${s}</span><input data-k="${k}" data-s="1" type="number" step="any" min="0" placeholder="0" style="width:${w}px"></div>`;
+const two=(a,b,show)=>show?`<div>G: ${a}</div><div>L: ${b}</div>`:"—";
 function banner(t){const b=$("ban");b.textContent=t;b.style.display="block"}
-function build(){
- $("bt").innerHTML=TIERS.map((u,i)=>`<tr><td>Food T${i+1}</td><td>${u}</td><td id="bb${i}"></td><td id="be${i}"></td><td id="bm${i}"></td><td id="bp${i}"></td></tr>`).join("");
- $("fb").innerHTML=TIERS.map((u,i)=>`<tr><td>Food T${i+1}</td><td>${u}</td><td><div class="field" style="display:inline-flex;height:34px"><span class="cur">G</span><input data-k="food-${i+1}" data-s="1" type="number" step="any" min="0" placeholder="0" style="width:70px"></div><div class="small" id="fu${i}"></div></td><td id="c${i}"></td><td id="pr${i}"></td><td id="b${i}"></td><td id="yp${i}"></td></tr>`).join("");
- document.querySelectorAll("input[data-s]").forEach(el=>el.addEventListener("change",()=>savePrice(el.dataset.k,el.value)));
+function saveH(){if(hdoc)Promise.resolve(hdoc.set(hold)).catch(()=>banner("Couldn't save your holdings."))}
+function bindP(sel){document.querySelectorAll(sel).forEach(el=>el.addEventListener("change",()=>savePrice(el.dataset.k,el.value)))}
+function setRes(){R=RES[cur];T=R.chain?R.chain.tiers:[];
+ REC=LIGHT.filter(r=>r.out===R.pk||r.inputs.some(i=>i[0]===R.pk));
+ const V={cmp:true,std:R.type!=="heavy",plant:R.type==="raw",chain:!!R.chain,light:REC.length>0,heavy:R.type==="heavy"};
+ document.querySelectorAll("[data-v]").forEach(e=>e.style.display=V[e.dataset.v]?"":"none");
+ document.querySelectorAll(".rn").forEach(e=>e.textContent=R.name);
+ document.querySelectorAll(".un").forEach(e=>e.textContent=R.unit);
+ document.querySelectorAll(".pn").forEach(e=>e.textContent=R.chain?R.chain.prod:"");
+ document.querySelectorAll("[data-sk]").forEach(e=>{e.dataset.k={price:R.pk,lprice:"loc-"+R.pk,out:R.po,yield:R.chain&&R.chain.py}[e.dataset.sk]});
+ document.querySelectorAll("#rtabs .tab").forEach(e=>e.classList.toggle("on",e.dataset.r===cur));
+ const P=R.chain?R.chain.pp:"";
+ $("bt").innerHTML=T.map((u,i)=>`<tr><td>${R.chain.prod} T${i+1}</td><td>${u}</td><td id="bb${i}"></td><td id="be${i}"></td><td id="bg${i}"></td><td id="bl${i}"></td><td id="bp${i}"></td></tr>`).join("");
+ $("fb").innerHTML=T.map((u,i)=>`<tr><td>${R.chain.prod} T${i+1}</td><td>${u}</td><td>${IN(P+"-"+(i+1),"G",70)}</td><td>${IN("loc-"+P+"-"+(i+1),"$",70)}</td><td id="c${i}"></td><td id="pr${i}"></td><td id="b${i}"></td><td id="yp${i}"></td></tr>`).join("");
+ $("hb").innerHTML=SHIP.map((s,i)=>`<tr><td>Ship T${i+1}</td><td>${s[0]}</td><td>${s[1]}</td><td>${s[2]}</td><td id="hc${i}"></td><td>${IN("ship-"+(i+1),"G",70)}</td><td>${IN("loc-ship-"+(i+1),"$",70)}</td><td id="hp${i}"></td><td id="hn${i}"></td></tr>`).join("");
+ $("lightbox").innerHTML=REC.map((r,j)=>{const items=[...r.inputs.map(i=>i[0]),r.out];
+  return `<div class="card rcp"><div class="row"><b>${r.name}</b><span class="small">${r.inputs.map(i=>i[1]+" "+NAME[i[0]]).join(" + ")} per batch</span></div><div class="grid" style="margin:12px 0 0">${items.map(k=>`<div class="row"><span class="small">${NAME[k]} price</span><span>${IN(k,"G",64)} ${IN("loc-"+k,"$",64)}</span></div>`).join("")}<div class="row"><span class="small">${r.name} made per batch</span>${IN("batch-yield-"+r.out,"×",64)}</div></div><div class="line">Input cost: <b id="lc${j}">—</b> · Profit / batch: <b id="lp${j}">—</b> · Payback on 250 G: <b id="lpb${j}">—</b> <span class="small" id="lb${j}"></span></div></div>`}).join("");
+ bindP("#fb input[data-s],#hb input[data-s],#lightbox input[data-s]");
+ $("fuses").textContent=T.join(" / ")+" "+R.unit;
+ $("luses").textContent=REC.map(r=>r.name+": "+r.inputs.map(i=>i[1]+" "+NAME[i[0]]).join(" + ")).join(" · ");
 }
+function trend(hs,s,fm){
+ if(hs.length>1){const a=hs[hs.length-1].g,b=hs[hs.length-2].g,d=b?(a-b)/b*100:0;
+  $("trend"+s).innerHTML=`<span class="${cls(d)}">${d>0?"▲":d<0?"▼":"■"} ${Math.abs(d).toFixed(1)}%</span>`;
+  const mn=Math.min(...hs.map(x=>x.g)),mx=Math.max(...hs.map(x=>x.g)),r=mx-mn||1;
+  $("spark"+s).innerHTML=`<polyline fill="none" stroke="#f0b23a" stroke-width="2" points="${hs.map((x,i)=>(i/(hs.length-1)*196+2).toFixed(1)+","+(56-(x.g-mn)/r*52).toFixed(1)).join(" ")}"/>`;
+  $("trend"+s+"s").textContent=`${hs.length} updates · low ${fm(mn)} · high ${fm(mx)}`;
+ }else{$("trend"+s).textContent="—";$("spark"+s).innerHTML="";$("trend"+s+"s").textContent="Needs two updates"}}
 function render(){
- rate=n(prices["usd-per-gold"]);mode=pref==="U"&&rate>0?"U":"G";
- document.querySelectorAll(".cur").forEach(e=>e.textContent=mode==="U"?"$":"G");
- document.querySelectorAll("#mode .tab").forEach(e=>e.classList.toggle("on",e.dataset.m===mode));
- document.querySelectorAll("input[data-s]").forEach(el=>{if(document.activeElement!==el)el.value=disp(el.dataset.k,prices[el.dataset.k])});
- if(document.activeElement!==$("h-grain"))$("h-grain").value=hold.grain??"";
- rate=n(prices["usd-per-gold"]);const gp=n(prices["raw-grain"]),h=n(hold.grain);$("u-grain").textContent=alt(gp);$("hv").textContent=g(h*gp);
- let best=-1e9,bi=-1,sell=h*gp;
- TIERS.forEach((u,i)=>{const fp=n(prices["food-"+(i+1)]),cost=u*gp,pr=fp-cost,b=Math.floor(h/u),yp=b*pr;
-  $("c"+i).textContent=g(cost);$("fu"+i).textContent=alt(fp);$("pr"+i).innerHTML=`<span class="${cls(pr)}">${g(pr)}</span>`;$("b"+i).textContent=b;$("yp"+i).innerHTML=`<span class="${cls(yp)}">${g(yp)}</span>`;
-  const rev=b*fp;if(fp>0&&b>0&&rev>best){best=rev;bi=i}});
- if(bi>=0&&best>sell){$("bu").textContent=`Food T${bi+1}`;$("bus").textContent=`Make & sell ≈ ${g(best)} vs ${g(sell)} selling raw`}
- else if(h>0&&gp>0){$("bu").textContent="Sell raw";$("bus").textContent=`≈ ${g(sell)} — beats crafting at current prices`}
- else{$("bu").textContent="—";$("bus").textContent="Enter prices to compare"}
- const fi=(prices["income-tax"]==null?10:n(prices["income-tax"]))/100,fpd=(prices["production-tax"]==null?10:n(prices["production-tax"]))/100;
- const bq=n(hold.bq),bpu=n(hold.bpu),spent=bq*bpu;
- if(document.activeElement!==$("bq"))$("bq").value=hold.bq??"";
- if(document.activeElement!==$("bpu"))$("bpu").value=disp("bpu",hold.bpu);
- $("bc").textContent=g(spent);
- $("u-bpu").textContent=alt(bpu);
- $("ratehint").textContent=rate?"":"Set the USD per Gold rate at the top to see USD values everywhere.";
- document.querySelectorAll(".gc").forEach(e=>e.textContent=g(100));
+ rate=n(prices["usd-per-gold"]);const std=R.type!=="heavy";
+ document.querySelectorAll("input[data-s]").forEach(el=>{if(document.activeElement!==el){const v=prices[el.dataset.k];el.value=v==null?"":v}});
+ document.querySelectorAll("[data-h]").forEach(el=>{if(document.activeElement!==el){const v=hold[HK(el.dataset.h)];el.value=v??(el.tagName==="SELECT"?0:"")}});
+ const fi=tax("income-tax"),fpd=tax("production-tax"),hc=n(prices["heavy-cost"]);
+ document.querySelectorAll(".gc").forEach(e=>e.textContent=g(100));document.querySelectorAll(".gc2").forEach(e=>e.textContent=g(250));
+ document.querySelectorAll(".gh").forEach(e=>e.textContent=hc>0?g(hc):"Enter it above");
+ $("ratehint").textContent=rate?"":"Set this so local USD prices can be compared with gold.";
+ const items=[];if(std)items.push([R.name,R.pk]);T.forEach((u,i)=>items.push([R.chain.prod+" T"+(i+1),R.chain.pp+"-"+(i+1)]));if(!std)SHIP.forEach((s,i)=>items.push(["Ship T"+(i+1),"ship-"+(i+1)]));
+ $("cmpb").innerHTML=items.map(([lb,k])=>{const a=G(k),u=n(prices["loc-"+k]),b=L(k);const c1=a>0?g(a):"—",c2=u>0?gu(u):"—";
+  if(!(a>0&&b>0))return `<tr><td>${lb}</td><td>${c1}</td><td>${c2}</td><td>—</td><td>—</td></tr>`;
+  const d=b-a,lo=Math.min(a,b),hi=Math.max(a,b),net=hi*(1-fi)-lo;
+  return `<tr><td>${lb}</td><td>${c1}</td><td>${c2}</td><td><span class="${cls(d)}">${d>0?"+":""}${(d/a*100).toFixed(1)}%</span></td><td>Buy ${a<b?"Global → sell Local":"Local → sell Global"}: <span class="${cls(net)}">${g(net)}</span></td></tr>`}).join("");
+ if(!std){const Hc=n(hold[RES.construction.held]),He=n(hold[RES.electronics.held]),Hf=n(hold[RES.fuel.held]);
+  SHIP.forEach((s,i)=>{const cost=s[0]*buy("construction")+s[1]*buy("electronics")+s[2]*buy("fuel"),k="ship-"+(i+1),pg=G(k)*(1-fi-fpd)-cost,pl=L(k)*(1-fi-fpd)-cost,b=Math.min(Math.floor(Hc/s[0]),Math.floor(He/s[1]),Math.floor(Hf/s[2]));
+   $("hc"+i).textContent=cost>0?g(cost):"—";
+   $("hp"+i).innerHTML=two(`<span class="${cls(pg)}">${g(pg)}</span>`,`<span class="${cls(pl)}">${g(pl)}</span>`,cost>0&&(G(k)>0||L(k)>0));$("hn"+i).textContent=b});
+  return}
+ const yld=R.chain?n(prices[R.chain.py])||1:1,gp=G(R.pk),lp=L(R.pk),h=n(hold[R.held]),out=n(prices[R.po]),pp=R.chain?R.chain.pp:"";
+ $("u-pg").textContent=rate&&gp>0?"≈ $"+(gp*rate).toFixed(2):"";$("u-pl").textContent=rate>0&&lp>0?"≈ "+lp.toFixed(2)+" G":"";
+ $("hv").innerHTML=two(g(h*gp),g(h*lp),h>0&&(gp>0||lp>0));
+ const bu=P=>{let bs=-1,bi=-1;const sell=h*P(R.pk);T.forEach((u,i)=>{const fp=P(pp+"-"+(i+1)),b=Math.floor(h/u),rev=b*yld*fp;if(fp>0&&b>0&&rev>bs){bs=rev;bi=i}});return bi>=0&&bs>sell?`${R.chain.prod} T${bi+1} ≈ ${g(bs)}`:(h>0&&P(R.pk)>0?`Sell raw ≈ ${g(sell)}`:"—")};
+ if(R.chain)$("bu").innerHTML=`<div>Global: ${bu(G)}</div><div>Local: ${bu(L)}</div>`;
+ const sb=best(R.pk);$("pb").textContent=out*sb>0?(100/(out*sb)).toFixed(1)+" cycles":"—";
+ const bq=n(hold[HK("bq")]),bpu=n(hold[HK("bpu")]);
+ if(document.activeElement!==$("bpuU"))$("bpuU").value=rate>0&&bpu>0?+(bpu*rate).toFixed(4):"";
+ $("bc").textContent=g(bq*bpu);
  $("be").textContent=bpu>0&&fi<1?g(bpu/(1-fi)):"—";
- const rp=bq*(gp*(1-fi)-bpu);$("bm").innerHTML=bq>0&&gp>0?`<span class="${cls(rp)}">${g(rp)}</span>`:"—";
- TIERS.forEach((u,i)=>{const b=Math.floor(bq/u),den=1-fi-fpd,fm=n(prices["food-"+(i+1)]);
-  $("bb"+i).textContent=bq>0?`${b} (${(bq-b*u).toFixed(0)} left)`:"—";
-  $("be"+i).textContent=bpu>0&&den>0?g(u*bpu/den):"—";
-  $("bm"+i).textContent=fm>0?g(fm):"—";
-  const pf=b*(fm*den-u*bpu);$("bp"+i).innerHTML=b>0&&fm>0&&bpu>0?`<span class="${cls(pf)}">${g(pf)}</span>`:"—";});
- const out=n(prices["plant-output"]),inc=out*gp;$("pb").textContent=inc>0?(100/inc).toFixed(1)+" cycles":"—";
+ const rg=bq*(gp*(1-fi)-bpu),rl=bq*(lp*(1-fi)-bpu);
+ $("bm").innerHTML=two(`<span class="${cls(rg)}">${g(rg)}</span>`,`<span class="${cls(rl)}">${g(rl)}</span>`,bq>0&&(gp>0||lp>0));
+ T.forEach((u,i)=>{const k=pp+"-"+(i+1),b=Math.floor(h/u),cost=u*buy(R.pk),fg=G(k),fl=L(k),prg=yld*fg-cost,prl=yld*fl-cost;
+  $("c"+i).textContent=cost>0?g(cost):"—";
+  $("pr"+i).innerHTML=two(`<span class="${cls(prg)}">${g(prg)}</span>`,`<span class="${cls(prl)}">${g(prl)}</span>`,cost>0&&(fg>0||fl>0));
+  $("b"+i).textContent=b;const bp=Math.max(fg>0?prg:-1e9,fl>0?prl:-1e9);$("yp"+i).innerHTML=cost>0&&b>0&&bp>-1e9?`<span class="${cls(b*bp)}">${g(b*bp)}</span>`:"—";
+  const b2=Math.floor(bq/u),den=1-fi-fpd;
+  $("bb"+i).textContent=bq>0?`${b2} (${(bq-b2*u).toFixed(0)} left)`:"—";
+  $("be"+i).textContent=bpu>0&&den>0?g(u*bpu/den/yld):"—";
+  $("bg"+i).textContent=fg>0?g(fg):"—";$("bl"+i).textContent=n(prices["loc-"+k])>0?gu(n(prices["loc-"+k])):"—";
+  const q1=b2*(yld*fg*den-u*bpu),q2=b2*(yld*fl*den-u*bpu),qb=Math.max(fg>0?q1:-1e9,fl>0?q2:-1e9);
+  $("bp"+i).innerHTML=b2>0&&bpu>0&&qb>-1e9?`<span class="${cls(qb)}">${g(qb)}</span>`:"—"});
+ REC.forEach((r,j)=>{const cost=r.inputs.reduce((s,x)=>s+x[1]*buy(x[0]),0),y=n(prices["batch-yield-"+r.out])||1,pg=y*G(r.out)*(1-fi-fpd)-cost,pl=y*L(r.out)*(1-fi-fpd)-cost,ok=G(r.out)>0||L(r.out)>0,bp=Math.max(G(r.out)>0?pg:-1e9,L(r.out)>0?pl:-1e9);
+  $("lc"+j).textContent=cost>0?g(cost):"—";
+  $("lp"+j).innerHTML=cost>0&&ok?`G: <span class="${cls(pg)}">${g(pg)}</span> · L: <span class="${cls(pl)}">${g(pl)}</span>`:"—";
+  $("lpb"+j).textContent=cost>0&&ok&&bp>0?(250/bp).toFixed(1)+" batches":"—";
+  const q=(r.inputs.find(x=>x[0]===R.pk)||[])[1];$("lb"+j).textContent=q&&h>0?`· Your ${R.unit} covers ${Math.floor(h/q)} batches`:""});
+ trend(prices[R.hist]||[],"G",g);trend(prices["loc-"+R.hist]||[],"L",gu);
+ const ab=n(hold[HK("alb")]),as=n(hold[HK("als")]),al=[];
+ [["Global",gp],["Local",lp]].forEach(([m,p])=>{if(ab>0&&p>0&&p<=ab)al.push(m+": at or below your buy target");if(as>0&&p>=as)al.push(m+": at or above your sell target")});
+ $("alst").innerHTML=al.length?`<span class="pos">${al.join("<br>")}</span>`:"No alerts triggered";
+ const pn=n(hold[HK("pln")]),sup=pn*out,val=sup*sb*(1-fi),fc=pn*100;
+ $("pg").textContent=pn>0&&out>0?sup.toFixed(0)+" "+R.unit:"—";
+ $("pv").textContent=val>0?g(val):"—";$("pf").textContent=pn>0?g(fc):"—";$("pp").textContent=val>0?(fc/val).toFixed(1)+" cycles":"—";
+ if(R.chain){const fa=n(hold[HK("fan")]),ti=Math.min(4,Math.max(0,n(hold[HK("ft")]))),need=fa*T[ti],fpp=best(pp+"-"+(ti+1)),gap=sup-need,prof=fa*yld*fpp*(1-fi-fpd)-need*buy(R.pk);
+  $("fn").textContent=fa>0?need+" "+R.unit:"—";
+  $("fg").innerHTML=fa>0&&out>0?`<span class="${cls(gap)}">${gap>=0?"+":""}${gap.toFixed(0)}</span>`:"—";
+  $("fpl").textContent=fa>0&&out>0?`${Math.ceil(need/out)} total (${Math.max(0,Math.ceil(need/out)-pn)} more)`:"—";
+  $("fpr").innerHTML=fa>0&&fpp>0?`<span class="${cls(prof)}">${g(prof)}</span>`:"—"}
+ const hz=n(hold[HK("hz")]),bb=buy(R.pk);
+ if(out>0&&hz>0&&bb>0){const cpg=100/(out*hz);$("bvb").innerHTML=`<span class="${cpg<bb?"pos":"neg"}">${cpg<bb?"Build":"Buy"}</span>`;$("bvs").textContent=`Plant ≈ ${g(cpg)} per unit over ${hz} cycles vs ${g(bb)} to buy (cheaper market)`}else{$("bvb").textContent="—";$("bvs").textContent="Needs plant output, price and a cycle count"}
+ const tx=hold[HK("tx")]||[];let bq2=0,bc2=0,sq=0;tx.forEach(x=>{if(x.s==="buy"){bq2+=x.q;bc2+=x.q*x.p}else sq+=x.q});
+ $("txs").textContent=tx.length?`Bought ${bq2} · Sold ${sq} · Net held ${bq2-sq} · Avg cost ${g(bq2?bc2/bq2:0)}`:"No transactions yet";
+ $("txb").innerHTML=tx.map((x,i)=>`<tr><td>${x.s==="buy"?"Buy":"Sell"}</td><td>${x.q}</td><td>${g(x.p)}</td><td>${g(x.q*x.p)}</td><td><button data-d="${i}">✕</button></td></tr>`).join("");
 }
-async function savePrice(k,v){prices[k]=v===""?null:toG(k,n(v));render();if(!pdoc)return;
- try{await pdoc.update({[k]:prices[k]})}catch(e){try{await pdoc.set(prices)}catch(e2){banner("Couldn't save — you may need Contributor access to edit shared prices.")}}}
+function setup(){
+ $("rtabs").innerHTML=Object.keys(RES).map(k=>`<span class="tab" data-r="${k}">${RES[k].name}</span>`).join("");
+ $("hgrid").innerHTML=[["construction","Construction"],["electronics","Electronics"],["fuel","Fuel"]].map(([k,nm])=>`<div class="card"><div class="row"><div><b>${nm} price</b><div class="small">Shared</div></div><span>${IN(k,"G",64)} ${IN("loc-"+k,"$",64)}</span></div></div>`).join("")+`<div class="card"><div class="row"><div><b>Heavy industry cost</b><div class="small">Shared · to found</div></div>${IN("heavy-cost","G",64)}</div></div>`;
+ bindP("input[data-s]");
+ document.querySelectorAll("[data-h]").forEach(el=>el.addEventListener("change",()=>{hold[HK(el.dataset.h)]=n(el.value);render();saveH()}));
+ $("bpuU").addEventListener("change",e=>{if(!(rate>0)){banner("Set the USD per Gold rate first.");e.target.value="";return}hold[HK("bpu")]=n(e.target.value)/rate;render();saveH()});
+ $("tp").addEventListener("input",()=>{$("tpu").value=rate>0&&n($("tp").value)>0?+(n($("tp").value)*rate).toFixed(4):""});
+ $("tpu").addEventListener("input",()=>{$("tp").value=rate>0&&n($("tpu").value)>0?+(n($("tpu").value)/rate).toFixed(4):""});
+ document.querySelectorAll("#rtabs .tab").forEach(e=>e.addEventListener("click",()=>{cur=e.dataset.r;try{localStorage.setItem("pm-res",cur)}catch(x){}setRes();render()}));
+ $("txadd").addEventListener("click",()=>{const q=n($("tq").value);let p=n($("tp").value);if(!(p>0)&&n($("tpu").value)>0&&rate>0)p=n($("tpu").value)/rate;if(q<=0||p<=0)return;hold[HK("tx")]=[...(hold[HK("tx")]||[]),{s:$("tx-s").value,q,p,t:Date.now()}];$("tq").value="";$("tp").value="";$("tpu").value="";render();saveH()});
+ $("txb").addEventListener("click",e=>{const i=e.target.dataset.d;if(i==null)return;hold[HK("tx")]=(hold[HK("tx")]||[]).filter((_,j)=>j!=i);render();saveH()});
+ $("txuse").addEventListener("click",()=>{let q=0,c=0,s=0;(hold[HK("tx")]||[]).forEach(x=>{if(x.s==="buy"){q+=x.q;c+=x.q*x.p}else s+=x.q});if(q<=0)return;hold[HK("bq")]=Math.max(q-s,0);hold[HK("bpu")]=c/q;render();saveH()});
+ $("cpy").addEventListener("click",copySummary);$("csv").addEventListener("click",exportCsv);
+}
+function rows(){const r=[];if(R.type!=="heavy")r.push([R.name,R.pk]);
+ T.forEach((u,i)=>r.push([R.chain.prod+" T"+(i+1),R.chain.pp+"-"+(i+1)]));
+ if(R.type==="heavy")SHIP.forEach((s,i)=>r.push(["Ship T"+(i+1),"ship-"+(i+1)]));return r}
+function fmt(k){const a=prices[k],b=prices["loc-"+k];return (a==null?"—":n(a).toFixed(2)+" G")+" global / "+(b==null?"—":"$"+n(b).toFixed(2))+" local"}
+function copySummary(){const t="Parlamentum market"+(rate?" (1 G = $"+rate+")":"")+" — "+R.name+"\n"+rows().map(r=>r[0]+": "+fmt(r[1])).join("\n");
+ const done=()=>{$("cpy").textContent="Copied ✓";setTimeout(()=>$("cpy").textContent="Copy summary",1500)};
+ const fb=()=>{$("sumbox").style.display="block";$("sumbox").value=t;$("sumbox").select()};
+ try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}}
+async function exportCsv(){const csv="item,global_gold,local_usd\n"+rows().map(r=>`${r[0]},${prices[r[1]]==null?"":n(prices[r[1]])},${prices["loc-"+r[1]]==null?"":n(prices["loc-"+r[1]])}`).join("\n");
+ const fn="parlamentum-"+cur+"-prices.csv";
+ try{if(dl){await dl.save({filename:fn,data:csv});return}}catch(e){return}
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=fn;a.click()}
+async function savePrice(k,v){prices[k]=v===""?null:n(v);const up={[k]:prices[k]};
+ if(R.type!=="heavy"&&prices[k]!=null&&(k===R.pk||k==="loc-"+R.pk)){const hk=k===R.pk?R.hist:"loc-"+R.hist,hs=(prices[hk]||[]).slice(-59);hs.push({t:Date.now(),g:prices[k]});prices[hk]=hs;up[hk]=hs}
+ render();if(!pdoc)return;
+ try{await pdoc.update(up)}catch(e){try{await pdoc.set(prices)}catch(e2){banner("Couldn't save — you may need Contributor access to edit shared prices.")}}}
 async function init(){
- build();render();["bq","bpu"].forEach(id=>$(id).addEventListener("change",async e=>{hold[id]=toG(id,n(e.target.value));render();if(hdoc)try{await hdoc.set(hold)}catch(x){banner("Couldn't save your holdings.")}}));$("h-grain").addEventListener("change",async e=>{hold.grain=n(e.target.value);render();if(hdoc)try{await hdoc.set(hold)}catch(x){banner("Couldn't save your holdings.")}});
  try{
-  const claude_=window.claude;const db=claude_&&await claude_.use("db");const user=claude_&&await claude_.use("user");
-  if(!db||!user){$("st").textContent="Offline — sign in to save";banner("Sign in to claude.ai to save prices and holdings. Nothing is saved right now.");return}
-  uid=await user.id();pdoc=db.collection("market").doc("prices");hdoc=db.collection("data/users/"+uid).doc("holdings");
+  const c=window.claude;const db=c&&await c.use("db");const user=c&&await c.use("user");try{dl=c&&await c.use("downloads")}catch(x){}
+  if(!db||!user){try{prices=JSON.parse(localStorage.getItem("pm-prices")||"{}");hold=JSON.parse(localStorage.getItem("pm-hold")||"{}")}catch(x){}
+   pdoc={update:async()=>{try{localStorage.setItem("pm-prices",JSON.stringify(prices))}catch(x){}}};pdoc.set=pdoc.update;
+   hdoc={set:async()=>{try{localStorage.setItem("pm-hold",JSON.stringify(hold))}catch(x){}}};
+   $("st").textContent="Saved on this device";render();return}
+  const uid=await user.id();pdoc=db.collection("market").doc("prices");hdoc=db.collection("data/users/"+uid).doc("holdings");
   pdoc.onSnapshot(s=>{prices=s.exists?{...s.data()}:{};render();$("st").textContent="Live · saves automatically"});
   hdoc.onSnapshot(s=>{hold=s.exists?{...s.data()}:{};render()});
  }catch(e){$("st").textContent="Offline";banner("Couldn't connect to storage.")}
 }
-init();
+setup();setRes();render();init();
 </script></body></html>
